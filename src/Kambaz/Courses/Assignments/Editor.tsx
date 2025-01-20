@@ -11,8 +11,8 @@ export default function AssignmentEditor() {
             <label htmlFor="wd-description">Description</label><br/>
             <textarea
                 id="wd-description"
-                rows="5"
-                cols="60"
+                rows={5}
+                cols={60}
                 defaultValue={"The assignment is available online. Submit a link to the landing page of your Web application running on Netlify. " +
                     "The landing page should include the following:Your full name and section Links to each of the lab assignmentsLinks to all " +
                     "relevant source code repositoriesThe Kambaz application should include a link to navigate back to the landing page."}
