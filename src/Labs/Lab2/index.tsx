@@ -1,5 +1,13 @@
 import "./index.css";
 import Container from 'react-bootstrap/Container';
+import BootstrapForms from "./BootstrapForms.tsx";
+import BootstrapGrids from "./BootstrapGrids.tsx";
+import BootstrapLists from "./BootstrapLists.tsx";
+import BootstrapNavigation from "./BootstrapNavigation.tsx";
+import BootstrapTables from "./BootstrapTables.tsx";
+import ReactIconsSampler from "./ReactIcons.tsx";
+import ScreenSizeLabel from "./ScreenSizeLabel.tsx";
+
 export default function Lab2() {
     return (
         <Container>
@@ -294,7 +302,13 @@ export default function Lab2() {
             </div>
 
 
-
+            <BootstrapForms/>
+            <BootstrapGrids/>
+            <BootstrapLists/>
+            <BootstrapNavigation/>
+            <BootstrapTables/>
+            <ReactIconsSampler/>
+            <ScreenSizeLabel/>
         </Container>
 
     );
