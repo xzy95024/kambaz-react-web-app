@@ -1,8 +1,6 @@
 import {Button, Card, Form} from "react-bootstrap";
 
 import Select from "react-select";
-import {FaCalendarAlt} from "react-icons/fa";
-import {FaPlus} from "react-icons/fa6";
 
 const options = [
     { value: "Everyone", label: "Everyone" },
