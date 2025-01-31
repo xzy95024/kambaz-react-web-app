@@ -1,4 +1,5 @@
-import {Row} from "react-bootstrap";
+import {Button, Col, Form, FormControl, FormGroup, FormLabel, FormSelect, InputGroup} from "react-bootstrap";
+import FormRange from "react-bootstrap/FormRange";
 
 export default function BootstrapForms() {
     return (
@@ -59,7 +60,7 @@ export default function BootstrapForms() {
             </div>
             <div id="wd-css-responsive-forms-1">
                 <h3>Responsive forms</h3>
-                <Form.Group as={Row} className="mb-3" controlId="email1">
+                <Form.Group className="mb-3" controlId="email1">
                     <Form.Label column sm={2}>
                         Email
                     </Form.Label>
@@ -67,7 +68,7 @@ export default function BootstrapForms() {
                         <Form.Control type="email" value="email@example.com"/>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="mb-3" controlId="password1">
+                <Form.Group className="mb-3" controlId="password1">
                     <Form.Label column sm={2}>
                         Password
                     </Form.Label>
@@ -75,7 +76,7 @@ export default function BootstrapForms() {
                         <Form.Control type="password"/>
                     </Col>
                 </Form.Group>
-                <Form.Group as={Row} className="mb-3" controlId="textarea2">
+                <Form.Group className="mb-3" controlId="textarea2">
                     <Form.Label column sm={2}>
                         Bio
                     </Form.Label>
@@ -87,20 +88,20 @@ export default function BootstrapForms() {
             <div id="wd-css-responsive-forms-2">
                 <h3>Responsive forms</h3>
                 <Form>
-                    <Form.Group as={Row} className="mb-3">
+                    <Form.Group className="mb-3">
                         <Form.Label column sm={2}> Email </Form.Label>
                         <Col sm={10}>
                             <Form.Control type="email" placeholder="Email"/>
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row} className="mb-3">
+                    <Form.Group className="mb-3">
                         <Form.Label column sm={2}> Password </Form.Label>
                         <Col sm={10}>
                             <Form.Control type="password" placeholder="Password"/>
                         </Col>
                     </Form.Group>
                     <fieldset>
-                        <Form.Group as={Row} className="mb-3">
+                        <Form.Group className="mb-3">
                             <Form.Label as="legend" column sm={2}>
                                 Radios </Form.Label>
                             <Col sm={10}>
@@ -113,12 +114,12 @@ export default function BootstrapForms() {
                             </Col>
                         </Form.Group>
                     </fieldset>
-                    <Form.Group as={Row} className="mb-3">
+                    <Form.Group className="mb-3">
                         <Col sm={{span: 10, offset: 2}}>
                             <Form.Check label="Remember me"/>
                         </Col>
                     </Form.Group>
-                    <Form.Group as={Row} className="mb-3">
+                    <Form.Group className="mb-3">
                         <Col>
                             <Button type="submit">Sign in</Button>
                         </Col>

@@ -13,10 +13,10 @@ export default function CourseStatus() {
             <h3>Course Status</h3>
             <div className="d-flex">
                 <div className="w-20">
-                    <Button variant="secondary" size="me" className="w-100  rounded-0 border border-dark text-nowrap ">
+                    <Button variant="secondary"  className="w-100  rounded-0 border border-dark text-nowrap ">
                         <MdDoNotDisturbAlt className="me-0 fs-5"/> Unpublish </Button></div>
                 <div className="w-20">
-                    <Button variant="success" size="me" className="w-100 border border-dark rounded-0 me-2">
+                    <Button variant="success"  className="w-100 border border-dark rounded-0 me-2">
                         <FaCheckCircle className="me-2 fs-5"/> Publish </Button></div>
             </div>
             <br/>

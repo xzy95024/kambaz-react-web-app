@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {FaRegCircleUser} from "react-icons/fa6";
+
 export default function AccountNavigation() {
     return (
         <div id="wd-account-navigation" className="d-flex flex-column align-items-start list-group rounded-0 position-fixed">

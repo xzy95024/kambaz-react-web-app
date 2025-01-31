@@ -2,11 +2,11 @@ import { GoTriangleDown } from "react-icons/go";
 import AssignmentTools from "./AssignmentTools.tsx";
 import {BsGripVertical} from "react-icons/bs";
 import ModuleControlButtons from "../Modules/LessonControlButtons.tsx";
-import { LuNotebookPen } from "react-icons/lu";
 import {ListGroup} from "react-bootstrap";
 import {CiSquarePlus} from "react-icons/ci";
 import {IoEllipsisVertical} from "react-icons/io5";
 import AssignmentsIcon from "./assignmentsIcon.tsx";
+import { Link } from "react-router-dom";
 
 export default function Assignments() {
     return (
@@ -30,13 +30,13 @@ export default function Assignments() {
                         <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex align-items-center">
 
                             <div className="me-2 d-flex align-items-center">
-                                <AssignmentsIcon className="fs-4"/>
+                                <AssignmentsIcon/>
                             </div>
                             <div>
-                                <a href="#/Kambaz/Courses/0000/Assignments/A1"
-                                   className="wd-assignment-link text-decoration-none text-dark fw-bold">
+                                <Link to="/Kambaz/Courses/0000/Assignments/A1"
+                                      className="wd-assignment-link text-decoration-none text-dark fw-bold">
                                     A1 - ENV + HTML
-                                </a>
+                                </Link>
                                 <br/>
                                 <span className="small text-muted">
                                     <span className="text-danger">Multiple Modules</span> |
@@ -54,13 +54,14 @@ export default function Assignments() {
                         <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex align-items-center">
 
                             <div className="me-2 d-flex align-items-center">
-                                <AssignmentsIcon className="fs-4"/>
+                                <AssignmentsIcon/>
                             </div>
                             <div>
-                                <a href="#/Kambaz/Courses/0000/Assignments/A2"
-                                   className="wd-assignment-link text-decoration-none text-dark fw-bold">
-                                    A2 - CSS + BOOTSTRAP
-                                </a>
+
+                                <Link to="/Kambaz/Courses/0000/Assignments/A2"
+                                      className="wd-assignment-link text-decoration-none text-dark fw-bold">
+                                    A1 - ECSS + BOOTSTRAP
+                                </Link>
                                 <br/>
                                 <span className="small text-muted">
                                     <span className="text-danger">Multiple Modules</span> |
@@ -79,13 +80,13 @@ export default function Assignments() {
                         <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex align-items-center">
 
                             <div className="me-2 d-flex align-items-center">
-                                <AssignmentsIcon className="fs-4"/>
+                                <AssignmentsIcon />
                             </div>
                             <div>
-                                <a href="#/Kambaz/Courses/0000/Assignments/A3"
-                                   className="wd-assignment-link text-decoration-none text-dark fw-bold">
+                                <Link to="/Kambaz/Courses/0000/Assignments/A3"
+                                      className="wd-assignment-link text-decoration-none text-dark fw-bold">
                                     A3 - JAVASCRIPT + REACT
-                                </a>
+                                </Link>
                                 <br/>
                                 <span className="small text-muted">
                                     <span className="text-danger">Multiple Modules</span> |
