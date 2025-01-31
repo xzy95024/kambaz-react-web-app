@@ -20,31 +20,31 @@ export default function CourseStatus() {
                         <FaCheckCircle className="me-2 fs-5"/> Publish </Button></div>
             </div>
             <br/>
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <BiImport className="me-2 fs-5" /> Import Existing Content
             </Button>
 
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <LiaFileImportSolid className="me-2 fs-5" /> Import from Commons
             </Button>
 
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <PiCrosshairDuotone className="me-2 fs-5" /> Choose Home Page
             </Button>
 
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <IoBarChart className="me-2 fs-5" /> View Course Stream
             </Button>
 
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <TbSpeakerphone className="me-2 fs-5" /> New Announcement
             </Button>
 
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <IoBarChart className="me-2 fs-5" /> New Analytics
             </Button>
 
-            <Button variant="secondary" size="me" className="w-100 mt-1 text-start fixed-size">
+            <Button variant="secondary"  className="w-100 mt-1 text-start fixed-size">
                 <FaRegBell className="me-2 fs-5" /> View Course Notifications
             </Button>
 

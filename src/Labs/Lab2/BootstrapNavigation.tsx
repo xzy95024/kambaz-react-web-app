@@ -1,5 +1,5 @@
 import Nav from "react-bootstrap/Nav";
-import {Card} from "react-bootstrap";
+import {Button, Card} from "react-bootstrap";
 
 export default function BootstrapNavigation(){
     return(
