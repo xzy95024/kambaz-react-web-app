@@ -44,7 +44,7 @@ export default function PeopleTable() {
                     ))
                 ) : (
                     <tr>
-                        <td colSpan="6">No students enrolled in this course.</td>
+                        <td colSpan={6} >No students enrolled in this course.</td>
                     </tr>
                 )}
                 </tbody>

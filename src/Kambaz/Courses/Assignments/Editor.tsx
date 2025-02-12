@@ -19,14 +19,20 @@ export default function AssignmentEditor() {
     const assignment = db.assignments.find((assignment) => assignment._id === aid);
 
     // Format due date and availability date for input fields
-    const formattedDueDate = format(
-        parse(assignment.due_date, "MMM dd yyyy hh:mma", new Date()),
-        "yyyy-MM-dd'T'HH:mm"
-    );
-    const formattedStartDate = format(
-        parse(assignment.availability, "MMM dd yyyy hh:mma", new Date()),
-        "yyyy-MM-dd'T'HH:mm"
-    );
+    const formattedDueDate = assignment?.due_date
+        ? format(
+            parse(assignment.due_date, "MMM dd yyyy hh:mma", new Date()),
+            "yyyy-MM-dd'T'HH:mm"
+        )
+        : "";
+
+    const formattedStartDate = assignment?.availability
+        ? format(
+            parse(assignment.availability, "MMM dd yyyy hh:mma", new Date()),
+            "yyyy-MM-dd'T'HH:mm"
+        )
+        : "";
+
     const navigate = useNavigate();
 
     return (
@@ -35,7 +41,7 @@ export default function AssignmentEditor() {
             <div>
                 {/* Assignment Name Input */}
                 <label htmlFor="wd-name">Assignment Name</label><br/>
-                <input id="wd-name" className="form-control" defaultValue={assignment.title}/>
+                <input id="wd-name" className="form-control" defaultValue={assignment ? assignment.title : ""}/>
                 <br/>
 
                 {/* Assignment Description Textarea */}
@@ -60,7 +66,7 @@ export default function AssignmentEditor() {
                 <div className="d-flex align-content-center ms-auto">
                     <label htmlFor="wd-points" className="me-2">Points</label>
                     <input id="wd-points" className="form-control" style={{width: "450px"}} type="number"
-                           defaultValue={parseInt(assignment.points)}/>
+                           defaultValue={assignment ?  parseInt(assignment.points) : 0}/>
                 </div>
                 <br/>
 
