@@ -18,8 +18,9 @@ export default function ProtectedCourseRoute({ children }: { children: any }) {
 
     // Students must be enrolled to access a course
     const isEnrolled = enrollments.some(
-        (enrollment) => enrollment.user === currentUser._id && enrollment.course === cid
+        (enrollment: { user: string; course: string }) => enrollment.user === currentUser._id && enrollment.course === cid
     );
+
 
     return isEnrolled ? children : <Navigate to="/Kambaz/Dashboard" />;
 }

@@ -10,9 +10,6 @@ import ProtectedRoute from "./Account/ProtectedRoute.tsx";
 import ProtectedCourseRoute from "./Courses/ProtectedCourseRoute.tsx";
 
 
-function ProtectedCourseRouteRoute(props: { children: ReactNode }) {
-    return null;
-}
 
 export default function Kambaz() {
     const [courses, setCourses] = useState<any[]>(db.courses);

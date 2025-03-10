@@ -50,9 +50,9 @@ export default function Dashboard() {
     // Filter courses based on enrollment toggle
     const filteredCourses = showAllCourses
         ? courses
-        : courses.filter((course) =>
-            enrollments.some(
-                (enrollment) => enrollment.user === currentUser._id && enrollment.course === course._id
+        : courses.filter((course: any) =>
+            enrollments.some((enrollment: { user: string; course: string }) =>
+                enrollment.user === currentUser._id && enrollment.course === course._id
             )
         );
 
@@ -79,6 +79,7 @@ export default function Dashboard() {
                         onChange={(e) => setCourse({ ...course, name: e.target.value })}
                     />
                     <FormControl
+                        as="textarea"
                         value={course.description}
                         rows={3}
                         onChange={(e) => setCourse({ ...course, description: e.target.value })}
