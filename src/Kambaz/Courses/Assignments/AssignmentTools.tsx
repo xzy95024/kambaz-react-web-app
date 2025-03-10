@@ -1,10 +1,13 @@
 import {Button,} from "react-bootstrap";
 import {FaPlus} from "react-icons/fa6";
 import {CiSearch} from "react-icons/ci";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 
 export default function AssignmentTools() {
+    const navigate = useNavigate();
+    const { cid } = useParams();
     return (
         <div id="wd-assignment-controls" className="d-flex align-items-center gap-2">
             <div className="input-group me-3" style={{width: "350px", height: "38px"}}>
@@ -22,7 +25,8 @@ export default function AssignmentTools() {
                     variant="danger"
                     size="sm"
                     className="d-flex align-items-center px-3"
-                    id="wd-add-assignment-btn">
+                    id="wd-add-assignment-btn"
+                    onClick={() => navigate(`/Kambaz/Courses/${cid}/Assignments/new`)}>
                     <FaPlus className="me-1 fs-6"/>
                     Assignment
                 </Button>

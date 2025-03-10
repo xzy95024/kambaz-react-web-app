@@ -2,38 +2,80 @@ import {Button, Card, Form} from "react-bootstrap";
 import * as db from "../../Database";
 import {useParams, useNavigate} from "react-router-dom";
 import Select from "react-select";
-import { parse, format } from "date-fns"; // Import date-fns for formatting
+import {parse, format, parseISO} from "date-fns";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
+import {addAssignment, updateAssignment} from "./reducer.ts"; // Import date-fns for formatting
 
 // Options for the "Assign To" dropdown
 const options = [
-    { value: "Everyone", label: "Everyone" },
-    { value: "Option2", label: "Option2" },
-    { value: "Option3", label: "Option3" }
+    {value: "Everyone", label: "Everyone"},
+    {value: "Option2", label: "Option2"},
+    {value: "Option3", label: "Option3"}
 ];
 
 export default function AssignmentEditor() {
     // Retrieve course ID (cid) and assignment ID (aid) from URL parameters
-    const { cid, aid } = useParams();
-
-    // Find the assignment object based on the provided assignment ID
-    const assignment = db.assignments.find((assignment) => assignment._id === aid);
-
-    // Format due date and availability date for input fields
-    const formattedDueDate = assignment?.due_date
-        ? format(
-            parse(assignment.due_date, "MMM dd yyyy hh:mma", new Date()),
-            "yyyy-MM-dd'T'HH:mm"
-        )
-        : "";
-
-    const formattedStartDate = assignment?.availability
-        ? format(
-            parse(assignment.availability, "MMM dd yyyy hh:mma", new Date()),
-            "yyyy-MM-dd'T'HH:mm"
-        )
-        : "";
-
+    const {cid, aid} = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    // Find the assignment object based on the provided assignment ID
+    const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+
+    // Find assignment for editing, or create a new one
+    const assignment = assignments.find((assignment: any) => assignment._id === aid);
+
+
+
+    const [title, setTitle] = useState<string>(assignment?.title || "");
+    const [description, setDescription] = useState<string>(assignment?.description || "");
+    const [points, setPoints] = useState<number>(
+        assignment?.points ? parseInt(assignment.points.replace(/\D/g, "")) : 0
+    );
+    const [dueDate, setDueDate] = useState<string>(
+        assignment?.due_date
+            ? format(parse(assignment.due_date, "MMM dd yyyy hh:mma", new Date()), "yyyy-MM-dd'T'HH:mm")
+            : ""
+    );
+
+    const [availability, setAvailability] = useState<string>(
+        assignment?.availability
+            ? format(parse(assignment.availability, "MMM dd yyyy hh:mma", new Date()), "yyyy-MM-dd'T'HH:mm")
+            : ""
+    );
+
+
+    const handleSave = () => {
+        const formattedPoints = `${points} pts`; // Convert number back to "XX pts"
+        const formattedDueDate = format(parseISO(dueDate), "MMM dd yyyy hh:mma");
+        const formattedAvailability = format(parseISO(availability), "MMM dd yyyy hh:mma");
+        let assignmentData = {
+            _id: aid || crypto.randomUUID(), // Generate ID if new
+            title,
+            description,
+            points: formattedPoints, // save  in "XX pts" format
+            due_date: formattedDueDate,
+            availability:formattedAvailability,
+            course: cid!,
+        };
+
+        // if (aid) {
+        //     dispatch(updateAssignment(assignmentData));
+        // } else {
+        //     console.log("🚀 Dispatching addAssignment with:", assignmentData);
+        //     dispatch(addAssignment(assignmentData));
+        // }
+        if (aid && aid != "new") {
+            dispatch(updateAssignment(assignmentData));
+        } else {
+            assignmentData = { ...assignmentData, _id: crypto.randomUUID() };
+            console.log("🚀 Dispatching addAssignment with:", assignmentData);
+            dispatch(addAssignment(assignmentData));
+        }
+
+
+        navigate(`/Kambaz/Courses/${cid}/Assignments`);
+    };
 
     return (
         <div id="wd-assignments-editor">
@@ -41,32 +83,30 @@ export default function AssignmentEditor() {
             <div>
                 {/* Assignment Name Input */}
                 <label htmlFor="wd-name">Assignment Name</label><br/>
-                <input id="wd-name" className="form-control" defaultValue={assignment ? assignment.title : ""}/>
+                <input id="wd-name" className="form-control" value={title} onChange={(e) => setTitle(e.target.value)}/>
                 <br/>
 
                 {/* Assignment Description Textarea */}
-                <textarea
-                    className="form-control"
-                    id="wd-description"
-                    style={{height: "400px"}}
-                    defaultValue={"The assignment is available online.\n\nSubmit a link to the landing page of your Web application running on Netlify.\n" +
-                        "The landing page should include the following:\n\n" +
-                        "- Your full name and section\n" +
-                        "- Links to each of the lab assignments\n" +
-                        "- Links to all relevant source code repositories\n\n" +
-                        "The Kambaz application should include a link to navigate back to the landing page."}
-
-                />
+                <textarea className="form-control" id="wd-description" style={{height: "200px"}} value={description}
+                          onChange={(e) => setDescription(e.target.value)}/>
             </div>
             <br/>
-
             {/* Form for Assignment Details */}
             <form className="d-flex flex-column">
                 {/* Points Input */}
                 <div className="d-flex align-content-center ms-auto">
                     <label htmlFor="wd-points" className="me-2">Points</label>
-                    <input id="wd-points" className="form-control" style={{width: "450px"}} type="number"
-                           defaultValue={assignment ?  parseInt(assignment.points) : 0}/>
+                    <input
+                        id="wd-points"
+                        className="form-control"
+                        type="number"
+                        defaultValue={0}
+                        value={points} // Now always a number
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                            setPoints(value ? parseInt(value) : 0); // Convert to number or default to 0
+                        }}
+                    />
                 </div>
                 <br/>
 
@@ -134,8 +174,16 @@ export default function AssignmentEditor() {
                                 <input
                                     type="datetime-local"
                                     className="form-control"
-                                    style={{appearance: "none", WebkitAppearance: "none", MozAppearance: "none"}}
-                                    defaultValue={formattedDueDate}
+                                    id="wd-due-date"
+                                    style={{
+                                        appearance: "none",
+                                        WebkitAppearance: "none",
+                                        MozAppearance: "none",
+                                    }}
+                                    value={dueDate}
+                                    onChange={(e) =>{
+                                        setDueDate(e.target.value);
+                                    }}
                                 />
                             </div>
                         </Form.Group>
@@ -145,13 +193,27 @@ export default function AssignmentEditor() {
                             <div className="d-flex">
                                 <div>
                                     <label htmlFor="wd-available-from" className="fw-bold">Available From</label>
-                                    <input id="wd-available-from" type="datetime-local" className="form-control me-5"
-                                           style={{width: "170px"}} defaultValue={formattedStartDate}/>
+                                    <input
+                                        id="wd-available-from"
+                                        type="datetime-local"
+                                        className="form-control me-5"
+                                        style={{
+                                            width: "170px",
+                                            appearance: "none",
+                                            WebkitAppearance: "none",
+                                            MozAppearance: "none",
+                                        }}
+                                        value={availability}
+                                        onChange={(e) => {
+
+                                            setAvailability(e.target.value);
+                                        }}
+                                    />
                                 </div>
                                 <div>
                                     <label htmlFor="wd-available-until" className="fw-bold">Until</label>
                                     <input id="wd-available-until" type="datetime-local" className="form-control me-5"
-                                           style={{width: "170px"}} defaultValue={formattedDueDate}/>
+                                           style={{width: "170px"}} />
                                 </div>
                             </div>
                         </Form.Group>
@@ -168,7 +230,10 @@ export default function AssignmentEditor() {
                     className="me-1 float-end"
                     id="wd-save-assignment-change-btn"
                     style={{width: "150px"}}
-                    onClick={() => navigate(`/Kambaz/Courses/${cid}/Assignments`)} // Change URL as needed
+                    onClick={() => {
+                        console.log("Save Button Clicked"); //  Debugging step
+                        handleSave();
+                    }}
                 >
                     Save
                 </Button>
@@ -184,6 +249,7 @@ export default function AssignmentEditor() {
                     Cancel
                 </Button>
             </div>
+
         </div>
     );
 }
