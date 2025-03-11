@@ -1,13 +1,11 @@
 import {GoTriangleDown} from "react-icons/go";
 import AssignmentTools from "./AssignmentTools.tsx";
 import {BsGripVertical} from "react-icons/bs";
-import ModuleControlButtons from "../Modules/LessonControlButtons.tsx";
 import {ListGroup} from "react-bootstrap";
 import {CiSquarePlus} from "react-icons/ci";
 import {IoEllipsisVertical} from "react-icons/io5";
 import AssignmentsIcon from "./assignmentsIcon.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import * as db from "../../Database";
 import {useParams} from "react-router-dom";
 import ProtectedComponent from "../ProtectedComponent";
 import {useSelector} from "react-redux";

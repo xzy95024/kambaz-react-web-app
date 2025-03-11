@@ -5,7 +5,7 @@ import KambazNavigation from "./Navigation";
 import Courses from "./Courses";
 import "./styles.css";
 import * as db from "./Database";
-import {ReactNode, useState} from "react";
+import {useState} from "react";
 import ProtectedRoute from "./Account/ProtectedRoute.tsx";
 import ProtectedCourseRoute from "./Courses/ProtectedCourseRoute.tsx";
 
