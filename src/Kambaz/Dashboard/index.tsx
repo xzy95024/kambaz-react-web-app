@@ -101,7 +101,7 @@ export default function Dashboard() {
 
             <Row id="wd-dashboard-courses">
                 <Row xs={1} md={5} className="g-4">
-                    {filteredCourses.map((course) => (
+                    {filteredCourses.map((course:any) => (
                         <Col className="wd-dashboard-course m-2" style={{ width: "300px" }} key={course._id}>
                             <Card style={{ width: "300px", height: "600px" }}>
                                 <Link

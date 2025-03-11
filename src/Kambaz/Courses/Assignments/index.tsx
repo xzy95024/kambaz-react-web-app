@@ -18,7 +18,8 @@ export default function Assignments() {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-    const filteredAssignments = assignments?.filter((assignment) => assignment.course === cid);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+    const filteredAssignments = assignments?.filter((assignment:any) => assignment.course === cid);
     const navigate = useNavigate();
 
 
@@ -42,7 +43,7 @@ export default function Assignments() {
                     </div>
 
                     <ListGroup className="wd-lessons rounded-0">
-                        {filteredAssignments.map((assignment) => (
+                        {filteredAssignments.map((assignment:any) => (
                             <ListGroup.Item className="wd-lesson p-3 ps-1 d-flex align-items-center">
                                 <div className="me-2 d-flex align-items-center">
                                     <AssignmentsIcon />
