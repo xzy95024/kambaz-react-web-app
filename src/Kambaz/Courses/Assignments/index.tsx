@@ -14,7 +14,9 @@ import DeleteAssignmentButton from "./DeleteButtons.tsx";
 
 export default function Assignments() {
     const { cid } = useParams();
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const { currentUser } = useSelector((state: any) => state.accountReducer);
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
     const filteredAssignments = assignments?.filter((assignment) => assignment.course === cid);
     const navigate = useNavigate();
