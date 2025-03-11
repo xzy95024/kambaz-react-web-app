@@ -130,18 +130,18 @@ export default function Dashboard() {
                                         {currentUser?.role === "STUDENT" && (
                                             <div style={{ position: "absolute", bottom: "40px", left: "10px", right: "10px" }}>
                                             <Button
-                                                className={enrollments.some((enrollment) => enrollment.user === currentUser._id && enrollment.course === course._id)
+                                                className={enrollments.some((enrollment:any) => enrollment.user === currentUser._id && enrollment.course === course._id)
                                                     ? "btn btn-danger w-100 mt-auto"
                                                     : "btn btn-success w-100 mt-auto"}
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                                                    enrollments.some((enrollment) => enrollment.user === currentUser._id && enrollment.course === course._id)
+                                                    enrollments.some((enrollment:any) => enrollment.user === currentUser._id && enrollment.course === course._id)
                                                         ? handleUnenroll(course._id)
                                                         : handleEnroll(course._id);
                                                 }}
                                             >
-                                                {enrollments.some((enrollment) => enrollment.user === currentUser._id && enrollment.course === course._id)
+                                                {enrollments.some((enrollment:any) => enrollment.user === currentUser._id && enrollment.course === course._id)
                                                     ? "Unenroll"
                                                     : "Enroll"}
                                             </Button>

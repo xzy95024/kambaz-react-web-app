@@ -12,14 +12,14 @@ const enrollmentSlice = createSlice({
     initialState,
     reducers: {
         enrollStudent: (state, { payload }) => {
-            if (!state.enrollments.some((enrollment) => enrollment.user === payload.user && enrollment.course === payload.course)) {
+            if (!state.enrollments.some((enrollment:any) => enrollment.user === payload.user && enrollment.course === payload.course)) {
                 state.enrollments.push(payload);
                 localStorage.setItem("enrollments", JSON.stringify(state.enrollments)); // ✅ Save to localStorage
             }
         },
         unenrollStudent: (state, { payload }) => {
             state.enrollments = state.enrollments.filter(
-                (enrollment) => enrollment.user !== payload.user || enrollment.course !== payload.course
+                (enrollment:any) => enrollment.user !== payload.user || enrollment.course !== payload.course
             );
             localStorage.setItem("enrollments", JSON.stringify(state.enrollments)); // ✅ Save to localStorage
         },
