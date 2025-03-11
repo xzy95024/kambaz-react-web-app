@@ -1,21 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// ✅ Define the state type explicitly
-interface HelloState {
-    message: string;
-}
+// Define the state type explicitly
 
-// ✅ Define initialState with the correct type
-const initialState: HelloState = {
+
+// Define initialState with the correct type
+const initialState = {
     message: "Hello World",
 };
 
-// ✅ Explicitly define the generic type for createSlice
-const helloSlice = createSlice<HelloState, {}, "hello">({
+// Let createSlice infer the type automatically
+
+const helloSlice = createSlice({
     name: "hello",
     initialState,
-    reducers: {}, // Empty reducers
+    reducers: {
+        dummyReducer: (state) => state,
+    },
 });
-
 export default helloSlice.reducer;
-
