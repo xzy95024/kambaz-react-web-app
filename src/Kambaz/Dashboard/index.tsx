@@ -29,6 +29,10 @@ export default function Dashboard() {
     const handleAddCourse = () => {
         const newCourse = { ...course, _id: crypto.randomUUID() };
         dispatch(addCourse(newCourse));
+        dispatch(enrollStudent({
+            user: currentUser._id,
+            course: newCourse._id,
+        }));
     };
 
     const handleUpdateCourse = () => {
@@ -103,7 +107,7 @@ export default function Dashboard() {
                 <Row xs={1} md={5} className="g-4">
                     {filteredCourses.map((course:any) => (
                         <Col className="wd-dashboard-course m-2" style={{ width: "300px" }} key={course._id}>
-                            <Card style={{ width: "300px", height: "600px" }}>
+                            <Card style={{ width: "300px", height: "900px" }}>
                                 <Link
                                     to={`/Kambaz/Courses/${course._id}/Home`}
                                     className="wd-dashboard-course-link text-decoration-none text-dark"
@@ -111,7 +115,7 @@ export default function Dashboard() {
                                     <img src="/images/C2.jpg" width="192" height={160} />
                                     <div className="card-body">
                                         <h5 className="wd-dashboard-course-title card-title">{course.name}</h5>
-                                        <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
+                                        <p className="wd-dashboard-course-title card-text overflow-y-hidden" >
                                             {course.description}
                                         </p>
                                         {currentUser?.role === "FACULTY" && (
