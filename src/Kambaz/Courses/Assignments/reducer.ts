@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {assignments} from "../../Database"; // Import assignments from the database
+import {assignments} from "../../Database/index.js"; // Import assignments from the database
 
 const initialState = {
     assignments: assignments, // Initialize assignments from database
@@ -10,7 +10,7 @@ const assignmentsSlice = createSlice({
     initialState,
     reducers: {
         addAssignment: (state, { payload: newAssignment }) => {
-            console.log("🔥 Adding to Redux State:", newAssignment); // ✅ Debug log
+            console.log(" Adding to Redux State:", newAssignment); // ✅ Debug log
 
             state.assignments = [
                 ...state.assignments,

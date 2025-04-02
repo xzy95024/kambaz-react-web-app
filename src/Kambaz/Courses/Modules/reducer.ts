@@ -1,13 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {modules} from "../../Database";
+import {modules} from "../../Database/index.js";
 
 const initialState = {
-    modules: modules,
+    modules: [],
 };
 const modulesSlice = createSlice({
     name: "modules",
     initialState,
     reducers: {
+        setModules: (state, action) => {
+            state.modules = action.payload;
+        },
+
         addModule: (state, {payload: module}) => {
             const newModule: any = {
                 _id: crypto.randomUUID(),
@@ -60,6 +64,6 @@ const modulesSlice = createSlice({
 
     },
 });
-export const {addModule, deleteModule, updateModule, editModule, deleteLesson, editLesson} =
+export const {addModule, deleteModule, updateModule, editModule, deleteLesson, editLesson, setModules} =
     modulesSlice.actions;
 export default modulesSlice.reducer;

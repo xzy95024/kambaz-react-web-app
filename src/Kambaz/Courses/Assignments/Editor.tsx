@@ -5,6 +5,7 @@ import {parse, format, parseISO} from "date-fns";
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {addAssignment, updateAssignment} from "./reducer.ts"; // Import date-fns for formatting
+import * as assignmentClient from "./client.ts";
 
 // Options for the "Assign To" dropdown
 const options = [
@@ -44,36 +45,34 @@ export default function AssignmentEditor() {
     );
 
 
-    const handleSave = () => {
-        const formattedPoints = `${points} pts`; // Convert number back to "XX pts"
+    const handleSave = async () => {
+        const formattedPoints = `${points} pts`;
         const formattedDueDate = format(parseISO(dueDate), "MMM dd yyyy hh:mma");
         const formattedAvailability = format(parseISO(availability), "MMM dd yyyy hh:mma");
+
         let assignmentData = {
-            _id: aid || crypto.randomUUID(), // Generate ID if new
+            _id: aid && aid !== "new" ? aid : crypto.randomUUID(),
             title,
             description,
-            points: formattedPoints, // save  in "XX pts" format
+            points: formattedPoints,
             due_date: formattedDueDate,
-            availability:formattedAvailability,
+            availability: formattedAvailability,
             course: cid!,
         };
 
-        // if (aid) {
-        //     dispatch(updateAssignment(assignmentData));
-        // } else {
-        //     console.log("🚀 Dispatching addAssignment with:", assignmentData);
-        //     dispatch(addAssignment(assignmentData));
-        // }
-        if (aid && aid != "new") {
-            dispatch(updateAssignment(assignmentData));
-        } else {
-            assignmentData = { ...assignmentData, _id: crypto.randomUUID() };
-            console.log("🚀 Dispatching addAssignment with:", assignmentData);
-            dispatch(addAssignment(assignmentData));
+        try {
+            if (aid && aid !== "new") {
+                const updated = await assignmentClient.updateAssignment(assignmentData);
+                dispatch(updateAssignment(updated));
+            } else {
+                const created = await assignmentClient.createAssignment(cid!, assignmentData);
+                dispatch(addAssignment(created));
+            }
+
+            navigate(`/Kambaz/Courses/${cid}/Assignments`);
+        } catch (err) {
+            console.error("❌ Failed to save assignment", err);
         }
-
-
-        navigate(`/Kambaz/Courses/${cid}/Assignments`);
     };
 
     return (

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { courses as initialCourses } from "../Database"; // Import initial course data
+import { courses as initialCourses } from "../Database/index.js"; // Import initial course data
 
 const initialState = {
     courses: initialCourses, // Load courses from database

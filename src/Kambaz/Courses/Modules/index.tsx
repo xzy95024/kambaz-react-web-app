@@ -1,20 +1,43 @@
-import  {useState} from "react";
+import  {useState,useEffect} from "react";
 import ModulesControls from "./ModulesControls.tsx";
 import {FormControl, ListGroup} from "react-bootstrap";
 import {BsGripVertical} from "react-icons/bs";
 import ModuleControlButtons from "./LessonControlButtons";
 import {useParams} from "react-router-dom";
-import {addModule, editModule, updateModule, deleteModule, editLesson, deleteLesson}
+import {setModules,addModule, editModule, updateModule, deleteModule, editLesson, deleteLesson}
     from "./reducer";
 import {useSelector, useDispatch} from "react-redux";
-
+import * as coursesClient from "../client";
+import * as modulesClient from "./client.ts"
 export default function Modules() {
     const {cid} = useParams();
     const [moduleName, setModuleName] = useState("");
     const {modules} = useSelector((state: any) => state.modulesReducer);
     const {currentUser} = useSelector((state: any) => state.accountReducer); // Get current user role
     const dispatch = useDispatch();
+    const removeModule = async (moduleId: string) => {
+        await modulesClient.deleteModule(moduleId);
+        dispatch(deleteModule(moduleId));
+    };
+    const saveModule = async (module: any) => {
+        await modulesClient.updateModule(module);
+        dispatch(updateModule(module));
+    };
 
+    const fetchModules = async () => {
+        const modules = await coursesClient.findModulesForCourse(cid as string);
+        dispatch(setModules(modules));
+    };
+    const createModuleForCourse = async () => {
+        if (!cid) return;
+        const newModule = { name: moduleName, course: cid };
+        const module = await coursesClient.createModuleForCourse(cid, newModule);
+        dispatch(addModule(module));
+    };
+
+    useEffect(() => {
+        fetchModules();
+    }, []);
 
     return (
         <div className="wd-title p-3 ps-2">
@@ -24,10 +47,7 @@ export default function Modules() {
                 <ModulesControls
                 moduleName={moduleName}
              setModuleName={setModuleName}
-             addModule={() => {
-                 dispatch(addModule({name: moduleName, course: cid}));
-                 setModuleName("");
-             }}
+                addModule={createModuleForCourse}
         />
         <br/><br/><br/><br/><br/>
                 </div>
@@ -49,7 +69,7 @@ export default function Modules() {
                                                  )}
                                                  onKeyDown={(e) => {
                                                      if (e.key === "Enter") {
-                                                         dispatch(updateModule({...module, editing: false}));
+                                                         saveModule({ ...module, editing: false });
                                                      }
                                                  }}
                                                  defaultValue={module.name}/>
@@ -57,9 +77,7 @@ export default function Modules() {
                                 {currentUser.role === "FACULTY" && (
                                     <ModuleControlButtons
                                         moduleId={module._id}
-                                        deleteModule={(moduleId) => {
-                                            dispatch(deleteModule(moduleId));
-                                        }}
+                                        deleteModule={(moduleId) => removeModule(moduleId)}
                                         editModule={(moduleId) => dispatch(editModule(moduleId))}
                                     />
                                 )}
