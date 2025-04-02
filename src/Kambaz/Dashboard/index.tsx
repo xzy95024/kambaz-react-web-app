@@ -166,7 +166,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Col, FormControl, Row } from "react-bootstrap";
-import { updateCourse } from "../Courses/reducer.ts";
+// import { updateCourse } from "../Courses/reducer.ts";
 import * as coursesClient from "../Courses/client.ts";
 import * as enrollmentClient from "../Enrollments/client.ts";
 import * as userClient from "../Account/client.ts";
@@ -228,14 +228,14 @@ export default function Dashboard({
         try {
             await coursesClient.updateCourse(course);
 
-            const user = await userClient.profile(); // 👈 重新确认 session 存在
+            const user = await userClient.profile();
             if (!user) {
                 console.warn("⚠️ No session. Redirecting...");
                 window.location.href = "/Kambaz/Account/Signin";
                 return;
             }
 
-            await fetchMyCourses(); // ✅ 现在重新 fetch 不会 401
+            await fetchMyCourses();
         } catch (err) {
             console.error("❌ Failed to update course", err);
         }
@@ -257,7 +257,7 @@ export default function Dashboard({
 
     const handleAddCourse = async () => {
         try {
-            const newCourse = await userClient.createCourse(course);
+             await userClient.createCourse(course);
             await fetchMyCourses();
             setCourse({
                 _id: "0",
