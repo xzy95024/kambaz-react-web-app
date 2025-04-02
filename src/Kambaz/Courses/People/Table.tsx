@@ -8,10 +8,10 @@ export default function PeopleTable() {
     const { users, enrollments } = db;
 
 
-    const enrolledUser = users.filter(user =>
-             enrollments.some(enrollment =>
-                enrollment.user === user._id && enrollment.course === cid
-            )
+    const enrolledUser = users.filter((user: any) =>
+        enrollments.some((enrollment: any) =>
+            enrollment.user === user._id && enrollment.course === cid
+        )
     );
     return (
         <div id="wd-people-table">
@@ -28,7 +28,7 @@ export default function PeopleTable() {
                 </thead>
                 <tbody>
                 {enrolledUser.length > 0 ? (
-                    enrolledUser.map(user => (
+                    enrolledUser.map((user: any) => (
                         <tr key={user._id}>
                             <td className="wd-full-name text-nowrap">
                                 <FaUserCircle className="me-2 fs-1 text-secondary" />
