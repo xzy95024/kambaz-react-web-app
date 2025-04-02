@@ -22,3 +22,7 @@ export const deleteAssignment = async (assignmentId: string) => {
     const { data } = await axios.delete(`${ASSIGNMENTS_API}/assignments/${assignmentId}`);
     return data;
 };
+export const findAssignmentById = async (assignmentId: string) => {
+    const { data } = await axios.get(`${ASSIGNMENTS_API}/assignments/${assignmentId}`);
+    return data;
+};

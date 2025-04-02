@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-// @ts-expect-error
-import { courses as initialCourses } from "../Database/index.js"; // Import initial course data
+
 
 const initialState = {
-    courses: initialCourses, // Load courses from database
+    courses: [], // Load courses from database
 };
 
 const courseSlice = createSlice({
     name: "courses",
     initialState,
     reducers: {
+        setCourses: (state, { payload }) => {
+            state.courses = payload;
+        },
         // Add a new course
         addCourse: (state, { payload: newCourse }) => {
             state.courses = [ ...state.courses, newCourse];
@@ -29,5 +31,5 @@ const courseSlice = createSlice({
     },
 });
 
-export const { addCourse, deleteCourse, updateCourse } = courseSlice.actions;
+export const { addCourse, deleteCourse, updateCourse,setCourses } = courseSlice.actions;
 export default courseSlice.reducer;

@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-// @ts-expect-error
-import {assignments} from "../../Database/index.js"; // Import assignments from the database
+
 
 const initialState = {
-    assignments: assignments, // Initialize assignments from database
+    assignments: [], // Initialize assignments from database
 };
 
 const assignmentsSlice = createSlice({
     name: "assignments",
     initialState,
     reducers: {
+        setAssignments: (state, { payload }) => {
+            state.assignments = payload;
+        },
         addAssignment: (state, { payload: newAssignment }) => {
             console.log(" Adding to Redux State:", newAssignment); // ✅ Debug log
 
@@ -36,5 +38,5 @@ const assignmentsSlice = createSlice({
     },
 });
 
-export const { addAssignment, deleteAssignment, updateAssignment } = assignmentsSlice.actions;
+export const { addAssignment, deleteAssignment, updateAssignment,setAssignments } = assignmentsSlice.actions;
 export default assignmentsSlice.reducer;
