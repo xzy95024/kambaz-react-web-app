@@ -10,8 +10,10 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "allowJs": true,               // ✅ 允许导入 JS 模块
-    "checkJs": false               // ✅ 不报错检查 JS 文件
+    "allowJs": true,
+    "checkJs": false,
+    "outDir": "dist",
+    "noEmit": true                  
   },
   "include": [
     "src",
