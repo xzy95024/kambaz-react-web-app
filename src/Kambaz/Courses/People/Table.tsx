@@ -1,6 +1,7 @@
 import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+// @ts-expect-error
 import * as db from "../../Database/index.js";
 export default function PeopleTable() {
     const { cid } = useParams();

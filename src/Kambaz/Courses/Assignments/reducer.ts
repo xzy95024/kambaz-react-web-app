@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+// @ts-expect-error
 import {assignments} from "../../Database/index.js"; // Import assignments from the database
 
 const initialState = {

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+// @ts-expect-error
 import { courses as initialCourses } from "../Database/index.js"; // Import initial course data
 
 const initialState = {
