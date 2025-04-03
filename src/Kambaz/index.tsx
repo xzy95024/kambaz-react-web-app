@@ -8,7 +8,7 @@ import * as userClient from "./Account/client";
 import * as coursesClient from "./Courses/client.ts";
 import ProtectedRoute from "./Account/ProtectedRoute.tsx";
 import ProtectedCourseRoute from "./Courses/ProtectedCourseRoute.tsx";
-import Session from "./Account/Session";
+// import Session from "./Account/Session";
 import {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 
