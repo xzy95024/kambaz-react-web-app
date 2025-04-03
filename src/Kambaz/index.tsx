@@ -73,7 +73,6 @@ useEffect(() => {
         }
     }, [currentUser, showAllCourses]);
     return (
-        <Session>
         <div id="wd-kambaz">
             <KambazNavigation/>
             <div className="wd-main-content-offset p-3">
@@ -102,6 +101,5 @@ useEffect(() => {
 
             </div>
         </div>
-        </Session>
     );
 }
