@@ -6,6 +6,8 @@ export default function AccountNavigation() {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const location = useLocation(); // Get current URL
     const navigate = useNavigate(); // Function to redirect users
+    const { pathname } = useLocation();
+    const active = (path: string) => (pathname.includes(path) ? "active" : "");
     useEffect(() => {
         if (!currentUser && location.pathname === "/Kambaz/Account/Profile") {
             navigate("/Kambaz/Account/Signin");
@@ -55,6 +57,8 @@ export default function AccountNavigation() {
                     Profile
                 </Link>
             )}
+            {currentUser && currentUser.role === "ADMIN" && (
+                <Link to={`/Kambaz/Account/Users`} className={`list-group-item ${active("Users")}`}> Users </Link> )}
         </div>
     );
 }

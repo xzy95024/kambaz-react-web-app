@@ -69,7 +69,7 @@ useEffect(() => {
                 fetchMyCourses();
             }
         } else {
-            fetchMyCourses(); // faculty 永远只看自己 enroll 的课程
+            fetchMyCourses();
         }
     }, [currentUser, showAllCourses]);
     return (
