@@ -178,7 +178,7 @@ export default function Dashboard({
                                       setShowAllCourses,
                                       fetchMyCourses,
                                       fetchAllCourses,
-                                      deleteCourse,
+                                      deleteCourse, enrolling, setEnrolling
                                   }: {
     courses: any[];
     showAllCourses: boolean;
@@ -186,6 +186,9 @@ export default function Dashboard({
     fetchMyCourses: () => void;
     fetchAllCourses: () => void;
     deleteCourse: (id: string) => void;
+    enrolling: boolean;
+    setEnrolling: (enrolling: boolean) => void;
+
 }) {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
@@ -201,8 +204,8 @@ export default function Dashboard({
         description: "New Description",
     });
 
-    const isEnrolled = (courseId: string) =>
-        enrollments.some((e: any) => e.user === currentUser._id && e.course === courseId);
+    // const isEnrolled = (courseId: string) =>
+    //     enrollments.some((e: any) => e.user === currentUser._id && e.course === courseId);
 
     const refreshCourses = async () => {
         if (showAllCourses) {
@@ -212,13 +215,14 @@ export default function Dashboard({
         }
     };
 
-    const toggleEnrollment = async (courseId: string) => {
-        if (isEnrolled(courseId)) {
-            await enrollmentClient.unenroll(currentUser._id, courseId);
-            dispatch(unenrollStudent({ user: currentUser._id, course: courseId }));
+    const toggleEnrollment = async (course: any) => {
+        if (course.enrolled) {
+            await enrollmentClient.unenroll(currentUser._id, course._id);
+            dispatch(unenrollStudent({ user: currentUser._id, course: course._id }));
         } else {
-            await enrollmentClient.enroll(currentUser._id, courseId);
-            dispatch(enrollStudent({ user: currentUser._id, course: courseId }));
+            await enrollmentClient.enroll(currentUser._id, course._id);
+            console.log("📥 Enrolling user:", currentUser._id, "to course:", course._id);
+            dispatch(enrollStudent({ user: currentUser._id, course: course._id }));
         }
         await refreshCourses();
     };
@@ -257,8 +261,14 @@ export default function Dashboard({
 
     const handleAddCourse = async () => {
         try {
-             await userClient.createCourse(course);
+            // const newCourse = await coursesClient.createCourse(course);  //
+            await coursesClient.createCourse(course);
+
+            // await enrollmentClient.enroll(currentUser._id, newCourse._id);
+            // dispatch(enrollStudent({ user: currentUser._id, course: newCourse._id }));
+
             await fetchMyCourses();
+
             setCourse({
                 _id: "0",
                 name: "New Course",
@@ -276,16 +286,24 @@ export default function Dashboard({
     return (
         <Row id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1>
-            <hr />
-
-            {currentUser?.role === "FACULTY" ? (
+            <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary">
+                {enrolling ? "My Courses" : "All Courses"}
+            </button>
+            <hr/>
+            {currentUser?.role === "FACULTY" && (
                 <div>
                     <h5>
                         New Course
-                        <button className="btn btn-primary float-end" onClick={handleAddCourse}>
+                        <button
+                            className="btn btn-primary float-end"
+                            onClick={handleAddCourse}
+                        >
                             Add
                         </button>
-                        <button className="btn btn-warning float-end me-2" onClick={handleUpdateCourse}>
+                        <button
+                            className="btn btn-warning float-end me-2"
+                            onClick={handleUpdateCourse}
+                        >
                             Update
                         </button>
                     </h5>
@@ -302,30 +320,21 @@ export default function Dashboard({
                         onChange={(e) => setCourse({ ...course, description: e.target.value })}
                     />
                     <hr />
-                </div>
-            ) : (
-                <Button
-                    variant="primary"
-                    className="float-end mb-2"
-                    onClick={handleToggleCourses}
-                >
-                    {showAllCourses ? "Show Enrolled Courses" : "Show All Courses"}
-                </Button>
-            )}
+                </div>)}
 
             <h2 id="wd-dashboard-published">Courses ({courses.length})</h2>
-            <hr />
+            <hr/>
 
             <Row id="wd-dashboard-courses">
                 <Row xs={1} md={5} className="g-4">
                     {courses.map((course: any) => (
-                        <Col className="wd-dashboard-course m-2" style={{ width: "300px" }} key={course._id}>
-                            <Card style={{ width: "300px", height: "900px" }}>
+                        <Col className="wd-dashboard-course m-2" style={{width: "300px"}} key={course._id}>
+                            <Card style={{width: "300px", height: "900px"}}>
                                 <Link
-                                    to={`/Kambaz/Courses/${course._id}/Home`}
+                                    to={`/Kambaz/Courses/${course.course || course._id}/Home`}
                                     className="wd-dashboard-course-link text-decoration-none text-dark"
                                 >
-                                    <img src="/images/C2.jpg" width="192" height={160} />
+                                    <img src="/images/C2.jpg" width="192" height={160}/>
                                     <div className="card-body">
                                         <h5 className="wd-dashboard-course-title card-title">{course.name}</h5>
                                         <p className="wd-dashboard-course-title card-text overflow-y-hidden">
@@ -335,7 +344,12 @@ export default function Dashboard({
                                         {currentUser?.role === "FACULTY" && (
                                             <div
                                                 className="d-flex align-items-center"
-                                                style={{ position: "absolute", bottom: "40px", left: "40px", right: "10px" }}
+                                                style={{
+                                                    position: "absolute",
+                                                    bottom: "40px",
+                                                    left: "40px",
+                                                    right: "10px"
+                                                }}
                                             >
                                                 <Button className="btn btn-primary me-lg-5">Go</Button>
                                                 <Button
@@ -361,19 +375,34 @@ export default function Dashboard({
 
                                         {currentUser?.role === "STUDENT" && (
                                             <div
-                                                style={{ position: "absolute", bottom: "40px", left: "10px", right: "10px" }}
+                                                style={{
+                                                    position: "absolute",
+                                                    bottom: "40px",
+                                                    left: "10px",
+                                                    right: "10px"
+                                                }}
                                             >
-                                                <Button
-                                                    className={`btn w-100 mt-auto ${
-                                                        isEnrolled(course._id) ? "btn-danger" : "btn-success"
-                                                    }`}
+                                                {/*<Button*/}
+                                                {/*    className={`btn w-100 mt-auto ${*/}
+                                                {/*        isEnrolled(course._id) ? "btn-danger" : "btn-success"*/}
+                                                {/*    }`}*/}
+                                                {/*    onClick={(e) => {*/}
+                                                {/*        e.preventDefault();*/}
+                                                {/*        toggleEnrollment(course._id);*/}
+                                                {/*    }}*/}
+                                                {/*>*/}
+                                                {/*    {isEnrolled(course._id) ? "Unenroll" : "Enroll"}*/}
+                                                {/*</Button>*/}
+
+                                                <button
+                                                    className={`btn w-100 mt-auto ${course.enrolled ? "btn-danger" : "btn-success"}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        toggleEnrollment(course._id);
+                                                        toggleEnrollment(course);
                                                     }}
                                                 >
-                                                    {isEnrolled(course._id) ? "Unenroll" : "Enroll"}
-                                                </Button>
+                                                    {course.enrolled ? "Unenroll" : "Enroll"}
+                                                </button>
                                             </div>
                                         )}
                                     </div>

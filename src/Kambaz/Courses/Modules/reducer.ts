@@ -8,9 +8,10 @@ const modulesSlice = createSlice({
     name: "modules",
     initialState,
     reducers: {
-        setModules: (state, action) => {
-            state.modules = action.payload;
+        setModules: (state, { payload: modules }) => {
+            state.modules = modules;
         },
+
 
         addModule: (state, {payload: module}) => {
             const newModule: any = {
@@ -35,7 +36,7 @@ const modulesSlice = createSlice({
                 m._id === moduleId ? {...m, editing: true} : m
             ) as any;
         },
-        /** 🔥 NEW: Delete a lesson inside a module */
+        /**  NEW: Delete a lesson inside a module */
         deleteLesson: (state, { payload }) => {
             const { moduleId, lessonId } = payload;
             state.modules = state.modules.map((m: any) =>
@@ -44,7 +45,7 @@ const modulesSlice = createSlice({
                     : m
             ) as any;
         },
-        /** 🔥 NEW: Edit a lesson inside a module */
+        /**  NEW: Edit a lesson inside a module */
         editLesson: (state, { payload }) => {
             const { moduleId, lessonId, newName, editing } = payload;
 

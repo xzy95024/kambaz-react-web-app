@@ -106,22 +106,23 @@ export default function Assignments() {
 
     const [assignments, setAssignments] = useState<any[]>([]);
 
-    // 加载课程对应的作业
+
     const loadAssignments = async () => {
         if (!cid) return;
         try {
             const data = await client.findAssignmentsForCourse(cid);
+            console.log("📦 Raw assignments from backend:", data);
             setAssignments(data);
         } catch (err) {
             console.error("❌ Failed to fetch assignments", err);
         }
     };
 
-    // 删除作业，并刷新列表
+
     const handleDelete = async (assignmentId: string) => {
         try {
             await client.deleteAssignment(assignmentId);
-            await loadAssignments(); // 刷新
+            await loadAssignments(); //
         } catch (err) {
             console.error("❌ Failed to delete assignment", err);
         }
@@ -157,9 +158,12 @@ export default function Assignments() {
 
                     <ListGroup className="wd-lessons rounded-0">
                         {assignments.map((assignment: any) => (
+
                             <ListGroup.Item key={assignment._id} className="wd-lesson p-3 ps-1 d-flex align-items-center">
                                 <div className="me-2 d-flex align-items-center">
+
                                     <AssignmentsIcon />
+
                                 </div>
                                 <div>
                                     {currentUser?.role === "FACULTY" ? (
@@ -174,9 +178,11 @@ export default function Assignments() {
                                     )}
                                     <br />
                                     <span className="small text-muted">
+
                     <span className="text-danger">{assignment.modules}</span> |
-                    <strong> Not available until</strong> {assignment.availability} |
-                    <strong> Due</strong> {assignment.due_date} | {assignment.points}
+                    <strong> Not available until</strong> {assignment.availability ? new Date(assignment.availability).toLocaleString() : "N/A"}  |
+                    <strong> Due</strong> {assignment.due_date ? new Date(assignment.due_date).toLocaleString() : "N/A"}|
+                                        {assignment.points}
                   </span>
                                 </div>
 

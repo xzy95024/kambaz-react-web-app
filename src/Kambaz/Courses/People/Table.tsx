@@ -58,10 +58,12 @@ import { Table } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 import PeopleDetails from "./Details";
 import {Link, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import * as client from "./client";
 // import { useParams } from "react-router-dom";
 // import * as client from "./client";
 
-export default function PeopleTable({ users = [] }: { users?: any[] }) {
+export default function PeopleTable() {
     // const { cid } = useParams();
     // const [users, setUsers] = useState<any[]>([]);
 
@@ -74,7 +76,18 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
     // useEffect(() => {
     //     loadPeople();
     // }, [cid]);
-    const { uid } = useParams();
+    const { cid, uid } = useParams();
+    const [users, setUsers] = useState<any[]>([]);
+
+    const loadPeople = async () => {
+        if (!cid) return;
+        const people = await client.fetchEnrolledUsers(cid);
+        setUsers(people);
+    };
+
+    useEffect(() => {
+        loadPeople();
+    }, [cid]);
 
     return (
         <div id="wd-people-table">
@@ -90,13 +103,14 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
                 </tr>
                 </thead>
                 <tbody>
-                {users.map((user: any) => (
+                {users.length > 0 ? (
+                    users.map((user: any) => (
                         <tr key={user._id}>
                             <td className="wd-full-name text-nowrap">
                                 <Link to={`/Kambaz/Account/Users/${user._id}`} className="text-decoration-none">
-                                <FaUserCircle className="me-2 fs-1 text-secondary" />
-                                <span className="wd-first-name">{user.firstName}</span>
-                                <span className="wd-last-name">{user.lastName}</span>
+                                    <FaUserCircle className="me-2 fs-1 text-secondary" />
+                                    <span className="wd-first-name">{user.firstName}</span>
+                                    <span className="wd-last-name">{user.lastName}</span>
                                 </Link>
                             </td>
                             <td className="wd-login-id">{user.loginId}</td>
@@ -105,7 +119,12 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
                             <td className="wd-last-activity">{user.lastActivity}</td>
                             <td className="wd-total-activity">{user.totalActivity}</td>
                         </tr>
-                    ))}
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan={6}>No users enrolled in this course.</td>
+                    </tr>
+                )}
                 </tbody>
             </Table>
             {uid && <PeopleDetails key={uid} />}

@@ -17,14 +17,39 @@ export default function Kambaz() {
     const [courses, setCourses] = useState<any[]>([]);
     const [showAllCourses, setShowAllCourses] = useState(false); // ✅ 新增
     const { currentUser } = useSelector((state: any) => state.accountReducer);
-
-    const fetchMyCourses = async () => {
+    const [enrolling, setEnrolling] = useState<boolean>(false);
+    const findCoursesForUser = async () => {
         try {
-            const courses = await userClient.findMyCourses();
+            const courses = await userClient.findCoursesForUser(currentUser._id);
             setCourses(courses);
         } catch (error) {
             console.error(error);
         }
+    };
+    const fetchCourses = async () => {
+        try {
+            const allCourses = await coursesClient.fetchAllCourses();
+            const enrolledCourses = await userClient.findCoursesForUser(
+                currentUser._id
+            );
+            const courses = allCourses.map((course: any) => {
+                if (enrolledCourses.find((c: any) => c._id === course._id)) {
+                    return { ...course, enrolled: true };
+                } else {
+                    return course;
+                }
+            });
+            setCourses(courses);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchMyCourses = async () => {
+        const myCourses = await userClient.findMyCourses();
+        const withEnrolled = myCourses.map(c => ({ ...c, enrolled: true }));
+        console.log("✅ My courses with enrolled flag:", withEnrolled);
+        setCourses(withEnrolled);
     };
 
     const fetchAllCourses = async () => {
@@ -45,33 +70,64 @@ export default function Kambaz() {
 
 
 
-useEffect(() => {
+// useEffect(() => {
+//         const loadCourses = async () => {
+//             try {
+//                 if (currentUser?.role === "STUDENT") {
+//                     await fetchMyCourses();
+//                 } else {
+//                     await fetchAllCourses();
+//                 }
+//             } catch (err) {
+//                 console.error("Failed to load courses", err);
+//             }
+//         };
+//
+//         loadCourses().catch((e) => console.error(e));
+//     }, [currentUser]);
+//     useEffect(() => {
+//         if (!currentUser) return;
+//         if (currentUser.role === "STUDENT") {
+//             if (showAllCourses) {
+//                 fetchAllCourses();
+//             } else {
+//                 fetchMyCourses();
+//             }
+//         } else {
+//             fetchMyCourses();
+//         }
+//     }, [currentUser, showAllCourses]);
+//
+//     useEffect(() => {
+//         if (enrolling) {
+//             fetchCourses();
+//         } else {
+//             findCoursesForUser();
+//         }
+//     }, [currentUser, enrolling]);
+    useEffect(() => {
         const loadCourses = async () => {
-            try {
-                if (currentUser?.role === "STUDENT") {
-                    await fetchMyCourses();
-                } else {
-                    await fetchAllCourses();
-                }
-            } catch (err) {
-                console.error("Failed to load courses", err);
+            if (!currentUser) return;
+
+            if (currentUser.role === "ADMIN") {
+                await fetchAllCourses();
+                return;
+            }
+
+
+            if (enrolling) {
+
+                await fetchCourses();
+            } else if (showAllCourses) {
+                await fetchAllCourses();
+            } else {
+                await fetchMyCourses();
             }
         };
 
-        loadCourses().catch((e) => console.error(e));
-    }, [currentUser]);
-    useEffect(() => {
-        if (!currentUser) return;
-        if (currentUser.role === "STUDENT") {
-            if (showAllCourses) {
-                fetchAllCourses();
-            } else {
-                fetchMyCourses();
-            }
-        } else {
-            fetchMyCourses();
-        }
-    }, [currentUser, showAllCourses]);
+        loadCourses().catch(console.error);
+    }, [currentUser, showAllCourses, enrolling]);
+
     return (
         <div id="wd-kambaz">
             <KambazNavigation/>
@@ -86,7 +142,10 @@ useEffect(() => {
                                        setShowAllCourses={setShowAllCourses}
                                        fetchMyCourses={fetchMyCourses}
                                        fetchAllCourses={fetchAllCourses}
-                                        deleteCourse={deleteCourse} />
+
+                                        deleteCourse={deleteCourse}
+                                        enrolling={enrolling}
+                                        setEnrolling={setEnrolling}/>
                         </ProtectedRoute>
                     }/>
 

@@ -307,21 +307,30 @@ export default function AssignmentEditor() {
         loadAssignment();
     }, [aid]);
 
+    // const handleSave = async () => {
+    //     const formattedPoints = `${points} pts`;
+    //     const formattedDueDate = format(parseISO(dueDate), "MMM dd yyyy hh:mma");
+    //     const formattedAvailability = format(parseISO(availability), "MMM dd yyyy hh:mma");
+    //
+    //     const assignmentData = {
+    //         _id: aid && aid !== "new" ? aid : crypto.randomUUID(),
+    //         title,
+    //         description,
+    //         points: formattedPoints,
+    //         due_date: formattedDueDate,
+    //         availability: formattedAvailability,
+    //         course: cid!,
+    //     };
     const handleSave = async () => {
-        const formattedPoints = `${points} pts`;
-        const formattedDueDate = format(parseISO(dueDate), "MMM dd yyyy hh:mma");
-        const formattedAvailability = format(parseISO(availability), "MMM dd yyyy hh:mma");
-
         const assignmentData = {
             _id: aid && aid !== "new" ? aid : crypto.randomUUID(),
             title,
             description,
-            points: formattedPoints,
-            due_date: formattedDueDate,
-            availability: formattedAvailability,
+            points: `${points} pts`,
+            due_date: new Date(dueDate),         // ✅ use Date, not string
+            availability: new Date(availability), // ✅ use Date, not string
             course: cid!,
         };
-
         try {
             if (aid && aid !== "new") {
                 const updated = await assignmentClient.updateAssignment(assignmentData);
