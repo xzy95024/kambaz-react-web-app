@@ -191,7 +191,7 @@ export default function Dashboard({
 
 }) {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
-    const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
+    // const { enrollments } = useSelector((state: any) => state.enrollmentsReducer);
     const dispatch = useDispatch();
 
     const [course, setCourse] = useState<any>({
@@ -250,14 +250,7 @@ export default function Dashboard({
         await refreshCourses();
     };
 
-    const handleToggleCourses = () => {
-        if (showAllCourses) {
-            fetchMyCourses();
-        } else {
-            fetchAllCourses();
-        }
-        setShowAllCourses(!showAllCourses);
-    };
+
 
     const handleAddCourse = async () => {
         try {

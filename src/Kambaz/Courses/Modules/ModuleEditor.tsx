@@ -7,6 +7,7 @@ export default function ModuleEditor({show, handleClose, dialogTitle, moduleName
     moduleName: string;
     setModuleName: (name: string) => void;
     addModule: () => void;
+    deleteModule: (moduleId: any) => Promise<void>
 }) {
     return (
         <Modal show={show} onHide={handleClose}>

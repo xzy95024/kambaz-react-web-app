@@ -18,14 +18,14 @@ export default function Kambaz() {
     const [showAllCourses, setShowAllCourses] = useState(false); // ✅ 新增
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const [enrolling, setEnrolling] = useState<boolean>(false);
-    const findCoursesForUser = async () => {
-        try {
-            const courses = await userClient.findCoursesForUser(currentUser._id);
-            setCourses(courses);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    // const findCoursesForUser = async () => {
+    //     try {
+    //         const courses = await userClient.findCoursesForUser(currentUser._id);
+    //         setCourses(courses);
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
     const fetchCourses = async () => {
         try {
             const allCourses = await coursesClient.fetchAllCourses();
