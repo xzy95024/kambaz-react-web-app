@@ -60,7 +60,7 @@ export default function Modules() {
             {currentUser.role === "FACULTY" && (
                 <div>
                 <ModulesControls
-                    deleteModule={(moduleId) => deleteModuleHandler(moduleId)}
+                    // deleteModule={(moduleId: any) => deleteModuleHandler(moduleId)}
                     moduleName={moduleName}
                     setModuleName={setModuleName}
                     addModule={addModuleHandler}

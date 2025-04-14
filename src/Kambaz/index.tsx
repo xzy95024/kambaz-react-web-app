@@ -15,7 +15,7 @@ import {useSelector} from "react-redux";
 
 export default function Kambaz() {
     const [courses, setCourses] = useState<any[]>([]);
-    const [showAllCourses, setShowAllCourses] = useState(false); // ✅ 新增
+    const [showAllCourses] = useState(false);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const [enrolling, setEnrolling] = useState<boolean>(false);
     // const findCoursesForUser = async () => {
@@ -47,7 +47,7 @@ export default function Kambaz() {
 
     const fetchMyCourses = async () => {
         const myCourses = await userClient.findMyCourses();
-        const withEnrolled = myCourses.map(c => ({ ...c, enrolled: true }));
+        const withEnrolled = myCourses.map((c: any)=> ({ ...c, enrolled: true }));
         console.log("✅ My courses with enrolled flag:", withEnrolled);
         setCourses(withEnrolled);
     };
@@ -139,7 +139,7 @@ export default function Kambaz() {
                         <ProtectedRoute>
                             <Dashboard  courses={courses}
                                         showAllCourses={currentUser?.role === "STUDENT" ? showAllCourses : false}
-                                       setShowAllCourses={setShowAllCourses}
+                                       // setShowAllCourses={setShowAllCourses}
                                        fetchMyCourses={fetchMyCourses}
                                        fetchAllCourses={fetchAllCourses}
 
@@ -150,6 +150,11 @@ export default function Kambaz() {
                     }/>
 
                     <Route path="/Courses/:cid/*"
+
+
+
+
+
                            element={
                                <ProtectedCourseRoute>
                                    <Courses courses={courses}/>

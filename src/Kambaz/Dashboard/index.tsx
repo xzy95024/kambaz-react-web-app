@@ -175,14 +175,14 @@ import { enrollStudent, unenrollStudent } from "../Enrollments/reducer.ts";
 export default function Dashboard({
                                       courses,
                                       showAllCourses,
-                                      setShowAllCourses,
+
                                       fetchMyCourses,
                                       fetchAllCourses,
                                       deleteCourse, enrolling, setEnrolling
                                   }: {
     courses: any[];
     showAllCourses: boolean;
-    setShowAllCourses: (val: boolean) => void;
+
     fetchMyCourses: () => void;
     fetchAllCourses: () => void;
     deleteCourse: (id: string) => void;
